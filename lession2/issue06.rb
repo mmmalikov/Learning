@@ -20,9 +20,9 @@ puts 'list of items'
 
 summ = 0
 
-list.each do |x, y|
-  puts "#{x}: #{y[:price]}$ - #{y[:quantity]}"
-  summ += y[:price] * y[:quantity]
+list.each do |item, info|
+  puts "#{item}: #{info[:price]}$ - #{info[:quantity]}"
+  summ += info[:price] * info[:quantity]
 end
 
 puts "Summ of order = #{summ}"
