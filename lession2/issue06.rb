@@ -1,8 +1,4 @@
-input = ''
 list = {}
-price = 0
-count = 0
-summ = 0
 
 loop do
   puts 'Enter item'
@@ -17,14 +13,16 @@ loop do
   puts 'Enter count'
   count = gets.chomp.to_i
 
-  list[input] = { price => count }
+  list[input] = { price: price, quantity: count }
 end
 
 puts 'list of items'
 
+summ = 0
+
 list.each do |x, y|
-  puts "#{x}: #{y.keys[0]}$ - #{y[y.keys[0]]}"
-  summ += y.keys[0] * y[y.keys[0]]
+  puts "#{x}: #{y[:price]}$ - #{y[:quantity]}"
+  summ += y[:price] * y[:quantity]
 end
 
 puts "Summ of order = #{summ}"
