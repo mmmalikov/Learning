@@ -1,6 +1,7 @@
 class Train
   attr_accessor :number
   attr_accessor :type
+  attr_reader :count_of_cars
   def initialize(number, type, count_of_cars)
     @number = number
     @type = type
@@ -29,7 +30,7 @@ class Train
 
   def prev_station
     if @route
-      return puts 'On the first station!' unless @station_number.nonzero?
+      return puts 'On the first station!' if @station_number.zero?
       @route.station(@station_number - 1).name
     else
       puts 'no route!'
@@ -47,7 +48,7 @@ class Train
 
   def move_prev
     if @route
-      return puts 'On the first station!' unless @station_number.nonzero?
+      return puts 'On the first station!' if @station_number.zero?
       @station_number -= 1
     else
       puts 'no route!'
@@ -66,10 +67,6 @@ class Train
   def stop
     puts 'Train is stoped'
     @speed = 0
-  end
-
-  def count_of_cars
-    @count_of_cars
   end
 
   def add_car
@@ -92,71 +89,5 @@ class Train
 
   def last_station?
     @station_number + 1 == @route.size
-  end
-end
-
-class Station
-  attr_accessor :name
-  def initialize(name)
-    @name = name
-    @list_of_trains = []
-  end
-
-  def get_train(train)
-    @list_of_trains.insert(train)
-  end
-
-  def list_of_trains
-    puts 'List of trains'
-    @list_of_trains.each { |train| puts "train  No #{train.number}, type #{train.type}" }
-  end
-
-  def get_list_of_trains(type)
-    puts "List of trains type #{type}"
-    @list_of_trains.each do |train|
-      puts "train  No #{train.number}, type #{train.type}" if train.type == type
-    end
-  end
-
-  def send_train(train)
-    if train.next_station
-      puts "train #{train.number} is going to #{train.next_station}"
-      train.move_next
-      @list_of_trains.delete(train)
-    else
-      puts 'no route'
-    end
-  end
-end
-
-class Route
-  def initialize(from, to)
-    @stations = [from, to]
-  end
-
-  def add_station(station, order)
-    if order <= @stations.size
-      @stations.insert(order, station)
-      puts "#{station.name} is in the route"
-    else
-      puts 'Station is not in the route'
-    end
-  end
-
-  def delete_station(station)
-    @stations.delete_if { |x| x == station }
-  end
-
-  def list
-    puts 'Stations in this route:'
-    @stations.each { |station| puts station.name }
-  end
-
-  def station(number)
-    @stations[number]
-  end
-
-  def size
-    @stations.size
   end
 end
