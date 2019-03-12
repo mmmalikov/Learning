@@ -15,20 +15,20 @@ class Train
   end
 
   def current_station
-    return @route.station(@station_number).name unless @route.nil?
+    @route.station(@station_number).name if @route
   end
 
   def next_station
-    if !@route.nil?
-      return 'On the last station!' unless @station_number + 1 == @route.size
+    if @route
+      return 'On the last station!' unless last_station?
       @route.station(@station_number + 1).name
     else
-      'no route!'
+      false
     end
   end
 
   def prev_station
-    if !@route.nil?
+    if @route
       return puts 'On the first station!' unless @station_number.nonzero?
       @route.station(@station_number - 1).name
     else
@@ -37,7 +37,7 @@ class Train
   end
 
   def move_next
-    if !@route.nil?
+    if @route
       return puts 'you are in the end!' unless @station_number != @route.size
       @station_number += 1
     else
@@ -46,7 +46,7 @@ class Train
   end
 
   def move_prev
-    if !@route.empty?
+    if @route
       return puts 'On the first station!' unless @station_number.nonzero?
       @station_number -= 1
     else
@@ -89,6 +89,10 @@ class Train
       puts 'can not add a car'
     end
   end
+
+  def last_station?
+    @station_number + 1 == @route.size
+  end
 end
 
 class Station
@@ -103,7 +107,7 @@ class Station
   end
 
   def list_of_trains
-    puts 'List of trains type type'
+    puts 'List of trains'
     @list_of_trains.each { |train| puts "train  No #{train.number}, type #{train.type}" }
   end
 
@@ -115,7 +119,7 @@ class Station
   end
 
   def send_train(train)
-    if !train.next_station.empty?
+    if train.next_station
       puts "train #{train.number} is going to #{train.next_station}"
       train.move_next
       @list_of_trains.delete(train)
