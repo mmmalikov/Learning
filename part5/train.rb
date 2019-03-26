@@ -11,7 +11,7 @@ class Train
   def initialize(number)
     @number = number
     @cars = []
-    @count_of_cars = count_of_cars
+    @count_of_cars = 0
     @speed = 0
     @@trains[number] = self
   end
@@ -34,7 +34,7 @@ class Train
   end
 
   def move_prev
-    if !@route.nil?
+    if @route
       if @station_number >= 1
         @station_number -= 1
         puts "Going to #{@route.station(@station_number).name}"
@@ -57,19 +57,17 @@ class Train
   end
 
   def current_station
-    return @route.station(@station_number) unless @route.nil?
+    return @route.station(@station_number) if @route
   end
 
   def next_station
-    if !@route.nil? && @station_number < @route.size - 1
+    if @route && @station_number < @route.size - 1
       @route.station(@station_number + 1)
-    else
-      return nil
     end
   end
 
   def prev_station
-    if !@route.nil? && @station_number > 0
+    if @route && @station_number > 0
       @route.station(@station_number - 1)
     else
       return nil

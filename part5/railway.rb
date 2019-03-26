@@ -14,16 +14,19 @@ class Railway
   end
 
   def new_station(name)
-    @stations.push(Station.new(name))
+    station = Station.new(name)
+    @stations << station
   end
 
   def new_c_train
-    @trains.push(CargoTrain.new(@trains.size))
+    train = CargoTrain.new(@trains.size)
+    @trains << train
     @trains.last.number
   end
 
   def new_p_train
-    @trains.push(PassengerTrain.new(@trains.size))
+    train = PassengerTrain.new(@trains.size)
+    @trains << train
     @trains.last.number
   end
 
@@ -39,7 +42,8 @@ class Railway
 
   def new_route(from, to)
     if from < @stations.size + 1 && to < @stations.size + 1
-      @routes.push(Route.new(@stations[from], @stations[to]))
+      route = Route.new(@stations[from], @stations[to])
+      @routes << route
       @routes.last.list
     end
   end
@@ -53,7 +57,7 @@ class Railway
   end
 
   def add_in_route(route_number, station_number, order)
-    if !@stations[station_number].nil? && !@routes[route_number].nil?
+    if @stations[station_number] && @routes[route_number]
       @routes[route_number].add_station(@stations[station_number], order)
       @routes[route_number].list
     else
@@ -94,7 +98,7 @@ class Railway
   end
 
   def go_next(train_number)
-    if train_number <= @trains.size && !@trains[train_number].next_station.nil?
+    if train_number <= @trains.size && @trains[train_number].next_station
       @trains[train_number].current_station.send_train(@trains[train_number])
       next_station = @trains[train_number].move_next
       next_station.get_train(@trains[train_number])
@@ -102,7 +106,7 @@ class Railway
   end
 
   def go_prev(train_number)
-    if (train_number <= @trains.size) && !@trains[train_number].current_station.nil?
+    if (train_number <= @trains.size) && @trains[train_number].current_station
       @trains[train_number].current_station.send_train(@trains[train_number])
       previous_station = @trains[train_number].move_prev
       previous_station.get_train(@trains[train_number])

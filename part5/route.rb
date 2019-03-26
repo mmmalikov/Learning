@@ -16,13 +16,14 @@ class Route
   end
 
   def list
-    list = ''
-    @stations.each_with_index { |station, index| list+="[#{index}] #{station.name}, " }
+    list = @stations.each_with_object("") do |station, list|
+      list << "[#{@stations.index(station)}] #{station.name}, "
+    end
     list
   end
 
   def station(number)
-    return @stations[number] unless @stations[number].nil?
+    return @stations[number] if @stations[number]
   end
 
   def size
