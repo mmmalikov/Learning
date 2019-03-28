@@ -28,7 +28,7 @@ class Train
   end
 
   def move_next
-    if !@route.nil?
+    if @route
       if @station_number < @route.size
         @station_number += 1
         @route.station(@station_number)

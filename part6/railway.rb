@@ -60,8 +60,6 @@ class Railway
     if @stations[station_number] && @routes[route_number]
       @routes[route_number].add_station(@stations[station_number], order)
       @routes[route_number].list
-    else
-      nil
     end
   end
 
@@ -69,8 +67,6 @@ class Railway
     if station_number < @routes[route_number].size && route_number < @routes.size
       @routes[route_number].delete_station(@stations[station_number])
       @routes[route_number].list
-    else
-      nil
     end
   end
 
