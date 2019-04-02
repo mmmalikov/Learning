@@ -51,6 +51,8 @@ def self.run(railway)
         puts '------- Creating test data  -------'
         ui.create_data(railway)
         puts '-------------- Done ---------------'
+      else
+        puts 'Oops! Try Again!'
       end
     end
   end
@@ -79,6 +81,7 @@ def occupy(railroad)
   puts 'Enter a number of train to occupy'
   number_of_train = gets.chomp.to_i
   return unless railroad.size_of(number_of_train) > 0
+
   puts 'Enter a volume to occupy'
   volume = gets.chomp.to_f
   railroad.occupy_place(number_of_train, volume)
@@ -107,19 +110,19 @@ def create_data(railroad)
 end
 
 def list_of_stations(railroad)
-  railroad.list_of_stations.each_with_index { |station, index| puts "#{index} - Station #{station.name}, #{station.list_of_trains.size} trains"}
+  railroad.list_of_stations.each_with_index { |station, index| puts "#{index} - Station #{station.name}, #{station.list_of_trains.size} trains" }
 end
 
 def list_of_trains(railroad)
   puts '--- List of trains ---------------'
-  railroad.list_of_all_trains.each { |train| puts "train  No #{train.number}, size: #{train.count_of_cars}"}
+  railroad.list_of_all_trains.each { |train| puts "train  No #{train.number}, size: #{train.count_of_cars}" }
 end
 
 def list_of_cars(railroad)
   list_of_trains(railroad)
   puts 'Enter a number of train to add a carriage'
   number_of_train = gets.chomp.to_i
-  block = -> (car, index) { puts "#{index} - #{car.class}, full/occupied #{car.volume}/#{car.occupied}"}
+  block = ->(car, index) { puts "#{index} - #{car.class}, full/occupied #{car.volume}/#{car.occupied}" }
   railroad.cars_of(number_of_train, block)
 end
 
@@ -261,6 +264,8 @@ def change_route(railroad)
     delete_station_from_route(railroad, number_of_route)
   when 2
     puts 'Canceled'
+  else
+    puts 'Oops!'
   end
 end
 
@@ -279,6 +284,8 @@ def move_train(railroad)
       railroad.go_prev(number_of_train)
     when 2
       puts 'Canceled'
+    else
+      puts 'Oops!'
     end
   end
 end

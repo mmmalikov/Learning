@@ -45,6 +45,7 @@ class Train
   def move_next
     return if @route.nil?
     return unless @station_number < @route.size
+
     @station_number += 1
     @route.station(@station_number)
   end
@@ -52,6 +53,7 @@ class Train
   def move_prev
     return if @route.nil?
     return unless @station_number >= 1
+
     @station_number -= 1
     @route.station(@station_number)
   end
@@ -65,7 +67,7 @@ class Train
   end
 
   def current_station
-    return @route.station(@station_number) if @route
+    @route.station(@station_number) if @route
   end
 
   def next_station
@@ -87,8 +89,7 @@ class Train
   protected
 
   # вызывается из классов-наследников
-  def valid_car?(new_car);
-  end
+  def valid_car?(new_car); end
 
   def validate!
     raise 'Number of train cant be empty' if number.nil?
@@ -97,11 +98,6 @@ class Train
   end
 
   private
-
-  # не используем этот метод
-  def speed
-    @speed
-  end
 
   # этот метод описывает внутреннее поведение объекта
   def up_speed

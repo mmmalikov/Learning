@@ -13,7 +13,7 @@ class Station
     @name = names
     validate!
     @trains = []
-    @@stations.push(self)
+    @@stations << self
   end
 
   def each_train
@@ -43,6 +43,7 @@ class Station
   def validate!
     raise "Name of station can't be empty" unless name
     raise 'Name of station should be at least 3 symbols' if name.length < 3
+
     true
   end
 
