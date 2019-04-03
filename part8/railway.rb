@@ -6,6 +6,8 @@ require_relative './passenger_car'
 require_relative './cargo_car'
 
 class Railway
+  attr_reader :routes
+
   def initialize
     @stations = []
     @trains = []
@@ -46,10 +48,6 @@ class Railway
       @routes << route
       @routes.last.list
     end
-  end
-
-  def routes
-    @routes
   end
 
   def route(number)

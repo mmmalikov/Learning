@@ -1,9 +1,9 @@
 require_relative './railway'
 
 class UserInterface
-def self.run(railway)
+def self.run(railway) # rubocop:disable Metrics/CyclomaticComplexity
   ui = UserInterface.new
-  loop do
+  loop do # rubocop:disable Metrics/BlockLength
     begin
       ui.show_menu
       input = gets.chomp.to_i
@@ -127,7 +127,7 @@ def list_of_cars(railroad)
 end
 
 def trains_on_station(railroad)
-  railroad.list_of_stations.each_with_index { |station, index| puts "#{index} - Station #{station.name}, #{station.list_of_trains.size} trains"}
+  railroad.list_of_stations.each_with_index { |station, index| puts "#{index} - Station #{station.name}, #{station.list_of_trains.size} trains" }
   puts 'Enter number of station: '
   input = gets.chomp.to_i
   if railroad.list_of_trains(input).is_a?(Array)
@@ -219,7 +219,7 @@ def route_to_train(railroad)
     puts 'List of trains is empty!'
   else
     puts 'All trains:'
-    railroad.list_of_all_trains.each { |train| puts "train  No #{train.number}, size: #{train.count_of_cars}"}
+    railroad.list_of_all_trains.each { |train| puts "train  No #{train.number}, size: #{train.count_of_cars}" }
     puts 'Enter a number of train:'
     number_of_train = gets.chomp.to_i
     puts 'All routes:'
@@ -270,7 +270,7 @@ def change_route(railroad)
 end
 
 def move_train(railroad)
-  railroad.list_of_all_trains.each { |train| puts "train  No #{train.number}, size: #{train.count_of_cars}"}
+  railroad.list_of_all_trains.each { |train| puts "train  No #{train.number}, size: #{train.count_of_cars}" }
   puts 'Enter a number of train to move:'
   number_of_train = gets.chomp.to_i
   if railroad.current_station(number_of_train)
@@ -289,5 +289,4 @@ def move_train(railroad)
     end
   end
 end
-
 end

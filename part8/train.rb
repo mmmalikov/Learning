@@ -7,7 +7,7 @@ class Train
   attr_accessor :number
   attr_reader :speed
 
-  NUMBER_FORMAT = /[\w]{3}(\-)?[\w]{2}/
+  NUMBER_FORMAT = /[\w]{3}(\-)?[\w]{2}/ # rubocop:disable Style/MutableConstant
 
   @@trains = {}
 

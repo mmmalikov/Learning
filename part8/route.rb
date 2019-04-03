@@ -17,7 +17,7 @@ class Route
   end
 
   def list
-    @stations.each_with_object("") do |station, list|
+    @stations.each_with_object('') do |station, list|
       list << "[#{@stations.index(station)}] #{station.name}, "
     end
   end
