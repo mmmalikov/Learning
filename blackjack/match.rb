@@ -1,5 +1,6 @@
 require_relative 'Player'
 require_relative 'Deck'
+require_relative 'bank'
 
 class Match
   def initialize(name1, name2, sum)
@@ -10,54 +11,54 @@ class Match
 
   def round_start
     @deck = Deck.new
-    @player.bet(@bet_sum)
-    @bot.bet(@bet_sum)
-    @player.new_card(@deck.card)
-    @bot.new_card(@deck.card)
-    @player.new_card(@deck.card)
-    @bot.new_card(@deck.card)
+    @bank = Bank.new
+    @bank.make_bet(@player, @bet_sum)
+    @bank.make_bet(@bot, @bet_sum)
+    @player.get_card(@deck.card)
+    @bot.get_card(@deck.card)
+    @player.get_card(@deck.card)
+    @bot.get_card(@deck.card)
   end
 
   def card_to_player
-    @player.new_card(@deck.card)
+    @player.get_card(@deck.card)
   end
 
   def bot_turn
-    @bot.new_card(@deck.card) if Deck.points_of(@bot.cards) >= 18
+    @bot.get_card(@deck.card) if @bot.points >= 18
   end
 
   def result # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
-    player = Deck.points_of(@player.cards)
-    bot = Deck.points_of(@bot.cards)
+    player = @player.points
+    bot = @bot.points
     if player == bot
-      @player.profit(@bet_sum)
-      @bot.profit(@bet_sum)
+      @bank.prize(@player, @bot)
       return nil
     end
     bot_lose = bot > 21 && player <= 21
     player_won = bot < 21 && player <= 21 && (bot - 21).abs > (player - 21).abs
     if bot_lose || player_won
-      @player.profit(@bet_sum * 2)
+      @bank.prize(@player)
       return @player.name
     end
     player_lose = bot <= 21 && player > 21
     bot_won = bot <= 21 && player < 21 && (bot - 21).abs < (player - 21).abs
     if player_lose || bot_won # rubocop:disable Style/GuardClause:
-      @bot.profit(@bet_sum * 2)
+      @bank.prize(@bot)
       @bot.name
     end
   end
 
   def player
     { name: @player.name,
-      cards: @player.cards,
-      bank: @player.bank,
-      points: Deck.points_of(@player.cards) }
+      cards: @player.cards.to_s,
+      wallet: @player.wallet,
+      points: @player.points }
   end
 
   def bot
     { name: @bot.name,
       cards: @bot.cards,
-      points: Deck.points_of(@bot.cards) }
+      points: @bot.points }
   end
 end

@@ -1,22 +1,40 @@
 class Player
-  attr_reader :name, :bank, :cards
+  attr_reader :name, :wallet, :cards
 
-  def initialize(name = 'Bot', bank = 100)
+  def initialize(name = 'Bot', wallet = 100)
     @name = name
     @cards = []
-    @bank = bank
+    @wallet = wallet
   end
 
-  def new_card(card)
+  def get_card(card)
     @cards.push(card)
   end
 
   def bet(sum)
     @cards = []
-    @bank -= sum
+    @wallet -= sum
   end
 
   def profit(sum)
-    @bank += sum
+    @wallet += sum
   end
+
+  def points
+    sum = 0
+    @cards.each do |card|
+      if card.to_s.include?('A')
+        sum += 11 if (21 - sum + 11).abs < (21 - sum + 1).abs && sum + 11 < 21
+        sum += 1 if (21 - sum + 11).abs > (21 - sum + 1).abs && sum + 1 <= 21
+      else
+        sum += card.points
+      end
+    end
+    sum
+  end
+
+  def cards
+    @cards.map {|card| card.to_s}
+  end
+
 end

@@ -4,7 +4,6 @@ class Game
   def self.run
     game = Game.new
     loop do
-      begin
         game.show_menu
         input = gets.chomp.to_i
         case input
@@ -16,7 +15,6 @@ class Game
         else
           puts '... try again!'
         end
-      end
     end
   end
 
@@ -36,7 +34,7 @@ class Game
 
   def show_cards
     puts '= * = * = * = * = * = * = * = * = * = * = * = * = * ='
-    puts "NEW ROUND! Your bank:#{@match.player[:bank]}$"
+    puts "NEW ROUND! Your bank:#{@match.player[:wallet]}$"
     puts "#{@match.player[:name]}: #{@match.player[:cards]} (#{@match.player[:points]})"
     puts "#{@match.bot[:name]}: ######## (##)"
   end
@@ -49,19 +47,19 @@ class Game
     case input
     when 1
       @match.bot_turn
-      result
+      get_winner
     when 2
       @match.card_to_player
       @match.bot_turn
-      result
+      get_winner
     when 3
-      result
+      get_winner
     else
       puts ''
     end
   end
 
-  def result
+  def get_winner
     puts 'Result of the round:'
     winner = @match.result
     if winner.nil?
@@ -72,7 +70,7 @@ class Game
     puts "#{@match.player[:name]}: #{@match.player[:cards]} (#{@match.player[:points]})"
     puts "#{@match.bot[:name]}: #{@match.bot[:cards]} (#{@match.bot[:points]})"
     puts '= * = * = * = * = * = * = * = * = * = * = * = * = * ='
-    puts "Your bank: #{@match.player[:bank]}$"
+    puts "Your bank: #{@match.player[:wallet]}$"
     puts 'What to do? 1: Play again!, 2: Exit'
     input = gets.chomp.to_i
     case input
