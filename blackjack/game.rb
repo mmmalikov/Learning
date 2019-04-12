@@ -6,25 +6,31 @@ class Game
     loop do
       game.show_menu
       input = gets.chomp.to_i
-      game.match_start
       case input
       when 1
+        game.match_start
         game.round_start
-        game.show_cards
-        game.decision
-        game.get_winner
-        if game.play_again?
-          next
-        else
-          puts 'Bye!'
-          break
-        end
+        game.round
       when 2
         puts 'Bye!'
         break
       else
         puts 'Error, please repeat with 1 or 2!'
         next
+      end
+    end
+  end
+
+  def round
+    loop do
+      round_start
+      show_cards
+      decision
+      get_winner
+      if play_again?
+        next
+      else
+        break
       end
     end
   end
@@ -72,7 +78,6 @@ class Game
         next
       end
     end
-
   end
 
   def get_winner
@@ -90,18 +95,16 @@ class Game
   end
 
   def play_again?
-    loop do
-      puts 'What to do? 1: Open main menu, 2: Exit'
-      input = gets.chomp.to_i
-      case input
-      when 1
-        return true
-      when 2
-        return false
-      else
-        puts 'Error, please repeat with 1 or 2!'
-        next
-      end
+    puts 'What to do? 1: Play again?, 2: Exit to main menu'
+    input = gets.chomp.to_i
+    case input
+    when 1
+      return true
+    when 2
+      return false
+    else
+      puts 'Error, please repeat with 1 or 2!'
+      play_again?
     end
   end
 end

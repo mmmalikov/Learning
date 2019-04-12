@@ -7,11 +7,11 @@ class Match
     @player = Player.new(name1)
     @bot = Player.new(name2)
     @bet_sum = sum
+    @bank = Bank.new
   end
 
   def round_start
     @deck = Deck.new
-    @bank = Bank.new
     @bank.make_bet(@player, @bet_sum)
     @bank.make_bet(@bot, @bet_sum)
     @player.get_card(@deck.card)

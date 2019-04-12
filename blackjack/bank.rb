@@ -1,5 +1,5 @@
 class Bank
-  def initialize()
+  def initialize
     @account = 0
   end
 
