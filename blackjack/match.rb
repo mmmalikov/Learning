@@ -28,7 +28,7 @@ class Match
     @bot.get_card(@deck.card) if @bot.points >= 18
   end
 
-  def result # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
+  def get_winner # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
     player = @player.points
     bot = @bot.points
     if player == bot
