@@ -4,8 +4,11 @@ class Bank
   end
 
   def make_bet(player, summ)
-    player.bet(summ)
-    @account += summ
+    if player.bet(summ)
+      @account += summ
+    else
+      false
+    end
   end
 
   def prize(first_player, second_player = nil)

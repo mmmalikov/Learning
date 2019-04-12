@@ -8,9 +8,7 @@ class Game
       input = gets.chomp.to_i
       case input
       when 1
-        game.match_start
-        game.round_start
-        game.round
+        game.round if game.match_start
       when 2
         puts 'Bye!'
         break
@@ -28,11 +26,20 @@ class Game
       decision
       get_winner
       if play_again?
-        next
+        if bets_are_done?
+          next
+        else
+          puts 'No enough money for bet!'
+          break
+        end
       else
         break
       end
     end
+  end
+
+  def bets_are_done?
+    @match.bets_are_done?
   end
 
   def round_start
@@ -50,12 +57,13 @@ class Game
     puts 'Enter your name: '
     input = gets.chomp.to_s
     @match = Match.new(input, 'Robot', 10)
+    @match.bets_are_done?
   end
 
   def show_cards
     puts '= * = * = * = * = * = * = * = * = * = * = * = * = * ='
     puts "NEW ROUND! Your bank:#{@match.player[:wallet]}$"
-    puts "#{@match.player[:name]}: #{@match.player[:cards]} (#{@match.player[:points]})"
+    puts "#{@match.player[:name]}: #{@match.player[:cards_list]} (#{@match.player[:points]})"
     puts "#{@match.bot[:name]}: ######## (##)"
   end
 
@@ -88,8 +96,8 @@ class Game
     else
       puts "*** #{winner.upcase} WIN! ***"
     end
-    puts "#{@match.player[:name]}: #{@match.player[:cards]} (#{@match.player[:points]})"
-    puts "#{@match.bot[:name]}: #{@match.bot[:cards]} (#{@match.bot[:points]})"
+    puts "#{@match.player[:name]}: #{@match.player[:cards_list]} (#{@match.player[:points]})"
+    puts "#{@match.bot[:name]}: #{@match.bot[:cards_list]} (#{@match.bot[:points]})"
     puts '= * = * = * = * = * = * = * = * = * = * = * = * = * ='
     puts "Your bank: #{@match.player[:wallet]}$"
   end

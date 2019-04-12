@@ -12,8 +12,12 @@ class Player
   end
 
   def bet(sum)
-    @cards = []
-    @wallet -= sum
+    if sum <= @wallet
+      @cards = []
+      @wallet -= sum
+    else
+      false
+    end
   end
 
   def profit(sum)
@@ -33,8 +37,8 @@ class Player
     sum
   end
 
-  def cards
-    @cards.map {|card| card.to_s}
+  def cards_list
+    @cards.map(&:to_s)
   end
 
 end

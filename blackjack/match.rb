@@ -12,12 +12,14 @@ class Match
 
   def round_start
     @deck = Deck.new
-    @bank.make_bet(@player, @bet_sum)
-    @bank.make_bet(@bot, @bet_sum)
     @player.get_card(@deck.card)
     @bot.get_card(@deck.card)
     @player.get_card(@deck.card)
     @bot.get_card(@deck.card)
+  end
+
+  def bets_are_done?
+    @bank.make_bet(@player, @bet_sum) && @bank.make_bet(@bot, @bet_sum)
   end
 
   def card_to_player
@@ -50,15 +52,15 @@ class Match
   end
 
   def player
-    { name: @player.name,
-      cards: @player.cards.to_s,
-      wallet: @player.wallet,
-      points: @player.points }
+    {name: @player.name,
+     cards_list: @player.cards_list.to_s,
+     wallet: @player.wallet,
+     points: @player.points }
   end
 
   def bot
-    { name: @bot.name,
-      cards: @bot.cards,
-      points: @bot.points }
+    {name: @bot.name,
+     cards_list: @bot.cards_list,
+     points: @bot.points }
   end
 end
