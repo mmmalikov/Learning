@@ -4,28 +4,33 @@ class Game
   def self.run
     game = Game.new
     loop do
-        game.show_menu
-        input = gets.chomp.to_i
-        case input
-        when 1
-          game.match_start
-          game.show_cards
-          game.decision
-          game.get_winner
-          if game.play_again?
-            next
-          else
-            puts 'Bye!'
-            break
-          end
-        when 2
+      game.show_menu
+      input = gets.chomp.to_i
+      game.match_start
+      case input
+      when 1
+        game.round_start
+        game.show_cards
+        game.decision
+        game.get_winner
+        if game.play_again?
+          next
+        else
           puts 'Bye!'
           break
-        else
-          puts 'Error, please repeat with 1 or 2!'
-          next
         end
+      when 2
+        puts 'Bye!'
+        break
+      else
+        puts 'Error, please repeat with 1 or 2!'
+        next
+      end
     end
+  end
+
+  def round_start
+    @match.round_start
   end
 
   def show_menu
@@ -39,7 +44,6 @@ class Game
     puts 'Enter your name: '
     input = gets.chomp.to_s
     @match = Match.new(input, 'Robot', 10)
-    @match.round_start
   end
 
   def show_cards
