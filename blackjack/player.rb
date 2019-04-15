@@ -15,8 +15,6 @@ class Player
     if sum <= @wallet
       @cards = []
       @wallet -= sum
-    else
-      false
     end
   end
 

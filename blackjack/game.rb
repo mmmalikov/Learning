@@ -1,35 +1,45 @@
 require_relative 'Match'
+require_relative 'Interface'
 
 class Game
   def self.run
     game = Game.new
     loop do
-      game.show_menu
-      input = gets.chomp.to_i
-      case input
+      case Interface.main_menu
       when 1
-        game.round if game.match_start
+        if game.match_start
+          game.round
+        else
+          Interface.no_money
+          break
+        end
       when 2
-        puts 'Bye!'
+        Interface.bye
         break
       else
-        puts 'Error, please repeat with 1 or 2!'
+        Interface.error_message12
         next
       end
     end
   end
 
+  def match_start
+    player_name = Interface.ask_name
+    @match = Match.new(player_name)
+    @match.bets_are_done?
+  end
+
   def round
     loop do
-      round_start
-      show_cards
+      @match.round_start
+      Interface.round(@match.player, @match.bot)
       decision
       get_winner
       if play_again?
-        if bets_are_done?
+        if @match.bets_are_done?
           next
         else
-          puts 'No enough money for bet!'
+          Interface.no_money
           break
         end
       else
@@ -38,40 +48,9 @@ class Game
     end
   end
 
-  def bets_are_done?
-    @match.bets_are_done?
-  end
-
-  def round_start
-    @match.round_start
-  end
-
-  def show_menu
-    puts '= * = * = * = * = * = * = * = * = * = * = * = * = * ='
-    puts 'Welcome to Black-Jack game! select what to do:'
-    puts '1. Start a new game'
-    puts '2. Exit'
-  end
-
-  def match_start
-    puts 'Enter your name: '
-    input = gets.chomp.to_s
-    @match = Match.new(input, 'Robot', 10)
-    @match.bets_are_done?
-  end
-
-  def show_cards
-    puts '= * = * = * = * = * = * = * = * = * = * = * = * = * ='
-    puts "NEW ROUND! Your bank:#{@match.player[:wallet]}$"
-    puts "#{@match.player[:name]}: #{@match.player[:cards_list]} (#{@match.player[:points]})"
-    puts "#{@match.bot[:name]}: ######## (##)"
-  end
-
   def decision
     loop do
-      puts 'What to do? 1: SKIP, 2: GET A CARD, 3: OPEN!'
-      input = gets.chomp.to_i
-      case input
+      case Interface.decision
       when 1
         @match.bot_turn
         break
@@ -82,36 +61,30 @@ class Game
       when 3
         break
       else
-        puts 'Error, please repeat with 1, 2 or 3!'
+        Interface.error_message123
         next
       end
     end
   end
 
   def get_winner
-    puts 'Result of the round:'
     winner = @match.get_winner
     if winner.nil?
-      puts '*** ROUND DRAW! ***'
+      Interface.result_draw
     else
-      puts "*** #{winner.upcase} WIN! ***"
+      Interface.show_winner(winner)
     end
-    puts "#{@match.player[:name]}: #{@match.player[:cards_list]} (#{@match.player[:points]})"
-    puts "#{@match.bot[:name]}: #{@match.bot[:cards_list]} (#{@match.bot[:points]})"
-    puts '= * = * = * = * = * = * = * = * = * = * = * = * = * ='
-    puts "Your bank: #{@match.player[:wallet]}$"
+    Interface.round_result(@match.player, @match.bot)
   end
 
   def play_again?
-    puts 'What to do? 1: Play again?, 2: Exit to main menu'
-    input = gets.chomp.to_i
-    case input
+    case Interface.ask_repeat
     when 1
-      return true
+      true
     when 2
-      return false
+      false
     else
-      puts 'Error, please repeat with 1 or 2!'
+      Interface.error_message12
       play_again?
     end
   end

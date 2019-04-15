@@ -3,7 +3,7 @@ require_relative 'Deck'
 require_relative 'bank'
 
 class Match
-  def initialize(name1, name2, sum)
+  def initialize(name1, name2 = 'Robot', sum = 10)
     @player = Player.new(name1)
     @bot = Player.new(name2)
     @bet_sum = sum
@@ -52,15 +52,15 @@ class Match
   end
 
   def player
-    {name: @player.name,
-     cards_list: @player.cards_list.to_s,
-     wallet: @player.wallet,
-     points: @player.points }
+    { name: @player.name,
+      cards_list: @player.cards_list.to_s,
+      wallet: @player.wallet,
+      points: @player.points }
   end
 
   def bot
-    {name: @bot.name,
-     cards_list: @bot.cards_list,
-     points: @bot.points }
+    { name: @bot.name,
+      cards_list: @bot.cards_list,
+      points: @bot.points }
   end
 end
